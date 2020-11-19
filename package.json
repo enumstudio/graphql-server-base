@@ -1,0 +1,55 @@
+{
+  "name": "graphql-server-base",
+  "version": "1.0.0",
+  "description": "GraphQL",
+  "main": "index.js",
+  "scripts": {
+    "build": "tsc",
+    "dev": "ts-node-dev src",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/enumstudio/graphql-server-base.git"
+  },
+  "author": "Birkir Gudjonsson",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/enumstudio/graphql-server-base/issues"
+  },
+  "prettier": {
+    "singleQuote": true
+  },
+  "homepage": "https://github.com/enumstudio/graphql-server-base#readme",
+  "dependencies": {
+    "@auto-relay/typeorm": "^0.12.9",
+    "apollo-server": "^2.19.0",
+    "auto-relay": "^0.12.9",
+    "class-validator": "^0.12.2",
+    "graphql": "^15.4.0",
+    "graphql-iso-date": "^3.6.1",
+    "graphql-relay": "^0.6.0",
+    "graphql-tag": "^2.11.0",
+    "pg": "^8.5.1",
+    "reflect-metadata": "^0.1.13",
+    "type-graphql": "^1.1.1",
+    "typedi": "^0.8.0",
+    "typeorm": "^0.2.29",
+    "typeorm-typedi-extensions": "^0.2.3"
+  },
+  "devDependencies": {
+    "@types/graphql-iso-date": "^3.4.0",
+    "@types/node": "^14.14.8",
+    "@typescript-eslint/eslint-plugin": "^4.8.1",
+    "@typescript-eslint/parser": "^4.8.1",
+    "dotenv": "^8.2.0",
+    "eslint": "^7.13.0",
+    "eslint-config-prettier": "^6.15.0",
+    "eslint-plugin-import": "^2.22.1",
+    "prettier": "^2.1.2",
+    "prettier-eslint": "^11.0.0",
+    "subscriptions-transport-ws": "^0.9.18",
+    "ts-node-dev": "^1.0.0",
+    "typescript": "^4.0.5"
+  }
+}
