@@ -1,7 +1,7 @@
 {
   "name": "graphql-server-base",
-  "version": "1.0.0",
-  "description": "GraphQL",
+  "version": "1.0.1",
+  "description": "GraphQL server with batteries included",
   "main": "index.js",
   "scripts": {
     "start": "node ./build",
@@ -13,7 +13,7 @@
     "type": "git",
     "url": "git+https://github.com/enumstudio/graphql-server-base.git"
   },
-  "author": "Birkir Gudjonsson",
+  "author": "Enum ehf",
   "license": "MIT",
   "bugs": {
     "url": "https://github.com/enumstudio/graphql-server-base/issues"
