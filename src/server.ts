@@ -1,49 +1,74 @@
-import { TypeOrmConnection } from '@auto-relay/typeorm';
-import { ApolloServer, PubSub } from 'apollo-server';
-import { AutoRelayConfig } from 'auto-relay';
+import { ApolloServer } from 'apollo-server-express';
+import express from 'express';
+import { execute, subscribe } from 'graphql';
+import { createServer as createHttpServer } from 'http';
+import { SubscriptionServer } from 'subscriptions-transport-ws';
 import { buildSchema } from 'type-graphql';
-import Container from 'typedi';
-import { createConnection } from 'typeorm';
-import { PostgresConnectionOptions } from 'typeorm/driver/postgres/PostgresConnectionOptions';
-import { Foo } from './entities/Foo';
+import { Container } from 'typedi';
+import { authChecker } from './lib/auth-checker';
+import { createContext } from './lib/create-context';
 import { FooResolver } from './resolvers/FooResolver';
 
-new AutoRelayConfig({
-  orm: () => TypeOrmConnection,
-});
+export async function createServer() {
+  // create express app
+  const app = express();
 
-interface CreateServerProps {
-  connectionOptions?: Partial<PostgresConnectionOptions>;
-}
+  // create http server
+  const httpServer = createHttpServer(app);
 
-export async function createServer({
-  connectionOptions = {},
-}: CreateServerProps = {}) {
-  const connection = await createConnection({
-    type: 'postgres',
-    url: process.env.DATABASE_URL,
-    entities: [Foo],
-    synchronize: true,
-    logger: 'debug',
-    ...connectionOptions,
-  });
-
-  const pubSub = new PubSub();
-
+  // build schema with type-graphql
   const schema = await buildSchema({
     resolvers: [FooResolver],
     container: Container,
-    validate: false,
-    pubSub,
+    authChecker,
   });
 
-  const server = new ApolloServer({
+  // default graphql path
+  let graphqlPath = '/graphql';
+
+  // create subscriptions server
+  const subscriptionServer = SubscriptionServer.create(
+    { schema, execute, subscribe },
+    { server: httpServer, path: graphqlPath }
+  );
+
+  // create apollo server
+  const apolloServer = new ApolloServer({
     schema,
-    playground: true,
-    subscriptions: {
-      keepAlive: 10000,
-    },
+    context: createContext,
+    plugins: [
+      {
+        async serverWillStart() {
+          return {
+            async drainServer() {
+              subscriptionServer.close();
+            },
+          };
+        },
+      },
+    ],
   });
 
-  return { server, connection, pubSub };
+  // update graphql path
+  graphqlPath = apolloServer.graphqlPath;
+
+  async function startServer(port: number | string = process.env.PORT || 4000) {
+    // start apollo server
+    await apolloServer.start();
+
+    // apply apollo-server middleware to express app
+    apolloServer.applyMiddleware({ app });
+
+    // start http server
+    return new Promise<{ url: string; wsUrl: string }>((resolve) => {
+      httpServer.listen(port, () => {
+        resolve({
+          url: `http://localhost:${port}${graphqlPath}`,
+          wsUrl: `ws://localhost:${port}${graphqlPath}`,
+        });
+      });
+    });
+  }
+
+  return { startServer, httpServer, subscriptionServer, apolloServer };
 }

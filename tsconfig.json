@@ -4,6 +4,7 @@
     "experimentalDecorators": true,
     "skipLibCheck": true,
     "types": ["node"],
+    "moduleResolution": "node",
     "esModuleInterop": true,
     "forceConsistentCasingInFileNames": true,
     "lib": ["ESNext"],
