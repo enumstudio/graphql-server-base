@@ -11,7 +11,7 @@ import {
 } from 'type-graphql';
 import { Repository } from 'typeorm';
 import { InjectRepository } from 'typeorm-typedi-extensions';
-import { Foo } from '../entities/a-Foo';
+import { Foo } from '../entities/foo';
 import { CreateFooInput } from '../types/input/create-foo-input';
 import { Topics } from '../types/topics';
 
