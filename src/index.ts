@@ -4,7 +4,7 @@ import dotenv from 'dotenv';
 import 'reflect-metadata';
 import { Container } from 'typedi';
 import { createConnection, useContainer } from 'typeorm';
-import { Foo } from './entities/Foo';
+import { Foo } from './entities/a-Foo';
 import { createServer } from './server';
 
 dotenv.config();

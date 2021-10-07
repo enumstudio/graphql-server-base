@@ -7,7 +7,7 @@ import { buildSchema } from 'type-graphql';
 import { Container } from 'typedi';
 import { authChecker } from './lib/auth-checker';
 import { createContext } from './lib/create-context';
-import { FooResolver } from './resolvers/FooResolver';
+import { FooResolver } from './resolvers/foo-resolver';
 
 export async function createServer() {
   // create express app
