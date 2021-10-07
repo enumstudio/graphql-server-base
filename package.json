@@ -13,7 +13,7 @@
     "type": "git",
     "url": "git+https://github.com/enumstudio/graphql-server-base.git"
   },
-  "author": "Enum ehf",
+  "author": "Enum",
   "license": "MIT",
   "bugs": {
     "url": "https://github.com/enumstudio/graphql-server-base/issues"
